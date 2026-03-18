@@ -24,7 +24,7 @@ namespace risovalka
             this.b = b;
         }
 
-        public void Draw(Graphics canvas, int x0, int y0, int x1, int y1, int r, int g, int b)
+        public virtual void Draw(Graphics canvas, int x0, int y0, int x1, int y1, int r, int g, int b)
         {
 
         }
