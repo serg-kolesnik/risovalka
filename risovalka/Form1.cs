@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace risovalka
@@ -16,34 +9,13 @@ namespace risovalka
         Graphics canvas;
         public int x0, y0, x1, y1;
         string whatShape = "Rectangle";
+        public Color currentLineColor = Color.Gray;
+        public Color currentFillColor = Color.Black;
 
         public Form1()
         {
             InitializeComponent();
             canvas = panel1.CreateGraphics();
-        }
-
-        private void button1_Click(object sender, EventArgs e) // нерабочая
-        {
-            try
-            {
-                whatShape = "Rectangle";
-
-                var r = Convert.ToInt32(textBox1.Text);
-                var g = Convert.ToInt32(textBox2.Text);
-                var b = Convert.ToInt32(textBox3.Text);
-
-                x0 = 0;
-                y0 = 0;
-                x1 = 200;
-                y1 = 200;
-
-                Rectangle.Draw(canvas, x0, y0, x1, y1, r, g, b);
-            }
-            catch (Exception ex)
-            {
-                label1.Text = ex.Message;
-            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -87,13 +59,18 @@ namespace risovalka
 
         }
 
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        protected void panel1_MouseDown(object sender, MouseEventArgs e)
         {
             x0 = e.X;
             y0 = e.Y;
         }
 
-        private void panel1_MouseUp(object sender, MouseEventArgs e)
+        private void button1_Click(object sender, EventArgs e)
+        {
+            canvas.Clear(Color.White);
+        }
+
+        protected void panel1_MouseUp(object sender, MouseEventArgs e)
         {
             x1 = e.X;
             y1 = e.Y;
@@ -103,28 +80,48 @@ namespace risovalka
                 x1 = e.X;
                 y1 = e.Y;
 
-                var r = Convert.ToInt32(textBox1.Text);
-                var g = Convert.ToInt32(textBox2.Text);
-                var b = Convert.ToInt32(textBox3.Text);
+                
 
                 canvas = panel1.CreateGraphics();
 
                 if (whatShape == "Rectangle")
                 {
-                    Rectangle.Draw(canvas, x0, y0, x1, y1, r, g, b);
+                    Rectangle rec = new Rectangle(x0, y0, x1, y1, currentLineColor, currentFillColor);
+                    rec.Draw(canvas);
                 }
                 else if (whatShape == "Ellipse")
                 {
-                    Ellipse.Draw(canvas, x0, y0, x1, y1, r, g, b);
+                    Ellipse el = new Ellipse(x0, y0, x1, y1, currentLineColor, currentFillColor);
+                    el.Draw(canvas);
                 }
                 else if (whatShape == "Triangle")
                 {
-                    Triangle.Draw(canvas, x0, y0, x1, y1, r, g, b);
+                    Triangle tr = new Triangle(x0, y0, x1, y1, currentLineColor, currentFillColor);
+                    tr.Draw(canvas);
                 }
             }
             catch (Exception ex)
             {
                 label1.Text = ex.Message;
+            }
+        }
+
+        public void btnLineColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                currentLineColor = colorDialog1.Color;
+                panel3.BackColor = colorDialog1.Color;
+
+            }
+        }
+
+        private void btnFill_Click(object sender, EventArgs e)
+        {
+            if (colorDialog2.ShowDialog() == DialogResult.OK)
+            {
+                currentFillColor = colorDialog2.Color;
+                panel2.BackColor = colorDialog2.Color;
             }
         }
     }

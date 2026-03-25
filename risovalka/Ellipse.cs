@@ -7,33 +7,22 @@ using System.Threading.Tasks;
 
 namespace risovalka
 {
-    internal class Ellipse
+    internal class Ellipse : Figure
     {
-        int x0, y0, x1, y1, r, g, b;
-
-        public Ellipse(int x0, int y0, int x1, int y1, int r, int g, int b)
+        public Ellipse(int x0, int y0, int x1, int y1, Color currentLineColor, Color currentFillColor) : base (x0, y0, x1, y1, currentLineColor, currentFillColor)
         {
-            this.x0 = x0;
-            this.y0 = y0;
-            this.x1 = x1;
-            this.y1 = y1;
-            this.r = r;
-            this.g = g;
-            this.b = b;
         }
 
-        public static void Draw(Graphics canvas, int x0, int y0, int x1, int y1, int r, int g, int b)
+        public override void Draw(Graphics canvas)
         {
-            if (r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0) { throw new Exception("цвет вне диапазона"); }
-
             int x = Math.Min(x0, x1);
             int y = Math.Min(y0, y1);
 
             int width = Math.Abs(x1 - x0);
             int height = Math.Abs(y1 - y0);
 
-            Pen pen = new Pen(Color.FromArgb(b, r, g));
-            Brush brush = new SolidBrush(Color.FromArgb(r, g, b));
+            Pen pen = new Pen(currentLineColor);
+            Brush brush = new SolidBrush(currentFillColor);
 
             canvas.FillEllipse(brush, x, y, width, height);
             canvas.DrawEllipse(pen, x, y, width, height);
